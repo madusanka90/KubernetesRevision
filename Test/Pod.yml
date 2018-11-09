@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demopod
+spec:
+  containers:
+    - name: democt
+      image: busybox:latest
+      command:
+        - for i in {1..100} do; echo $i; done
+      env:
+        - name: ENV_NAME
+          value: "DEMO"
+      resources:
+        requests:
+          cpu: '0.1'
+          memory: '128Mi'
+        limits:
+          cpu: '0.2'
+          memory: '256Mi'
+      volumeMounts:
+        - name: demovol
+          mountPath: "/"
+  volumes:
+    - name: demovol
+      path:
+        hostPath: /mnt/scripts
+      type: DirectoryOrCreate
