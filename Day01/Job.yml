@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: countjob
+spec:
+  completions: 4
+  parallelism: 2
+  template:
+    metadata:
+      name: countjob
+      labels:
+        version: v1
+    spec:
+      containers:
+        - name: countjob
+          image: busybox
+          command:
+            - for i in {1..100} do; echo $i; done

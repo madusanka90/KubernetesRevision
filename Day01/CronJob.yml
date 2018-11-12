@@ -1,0 +1,22 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: busycron
+spec:
+  completions: 2
+  parallelism: 1
+  schedule: "0,5,10,15,20,25,30 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: busycron
+          labels:
+            version: v1
+        spec:
+          containers:
+            - name: busycron
+              image: busybox:latest
+              command:
+               - for i in {1..100} do; echo $i; done
+          restartPolicy: OnFailure
