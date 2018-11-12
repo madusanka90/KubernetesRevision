@@ -1,0 +1,21 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cronjob
+spec:
+  completion: 1
+  parallelism: 1
+  schedule: "0,15,30,45 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        matadata:
+          labels:
+            job: memory
+        spec:
+          containers:
+            - name: memjob
+              image: busybox:latest
+              command:
+               - free
+               - "-m"

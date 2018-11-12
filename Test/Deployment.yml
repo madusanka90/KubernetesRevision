@@ -34,4 +34,43 @@ spec:
               protocol: TCP
               containerPort: 80
           env:
-            - name: 
+            - name: NGINX_HOME
+              configMapKeyRef:
+                name: mysqlconfig
+                key: path
+          volumeMounts:
+            - name: nginx-vol
+              mountPath: "/usr/local/nginx/html"
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "300m"
+              memory: "512Mi"
+        - name: mysql
+          image: mysql:latest
+          ports:
+            - name: mysql
+              protocol: TCP
+              containerPort: 3306
+          env:
+            - name: MYSQL_USER
+              configMapKeyRef:
+                name: mysqlconfig
+                key: user
+            - name: MYSQL_ROOT_PASSWORD
+              secretKeyRef:
+                name: mysqlsec
+                key: password
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "300m"
+              memory: "512Mi"
+      volumes:
+        - name: nginx-vol
+          persistentVolumeClaim:
+            claimName: nginxpvc

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeclaim
+metadata:
+  name: nginxpvc
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  accessModes:
+    - ReadOnlyMany
+  storageClassName: ""

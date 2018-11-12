@@ -2,6 +2,8 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: svcnginxin
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
     - hostname: webserver1.example.com
