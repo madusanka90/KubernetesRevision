@@ -32,3 +32,10 @@ spec:
              configMapKeyRef:
                name: mysqlconfig
                key: username
+          volumeMounts:
+            - name: mysql-vol
+              mountPath: /var/lib/mysql
+      volume:
+        - name: mysql-vol
+          hostPath:
+            path: /mnt/mysql-vol

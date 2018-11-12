@@ -1,0 +1,34 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: svcnginxin
+spec:
+  rules:
+    - hostname: webserver1.example.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: svcnginxci 
+              servicePort: 80
+    - hostname: webserver2.example.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: svcnginx2np
+              servicePort: 80
+    - hostname: webserver3.example.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: svcnginx3ci
+              servicePort: 80
+    - hostname: webserver4.example.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: svcnginx4ci
+              servicePort: 80

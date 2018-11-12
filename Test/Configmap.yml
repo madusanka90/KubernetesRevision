@@ -4,3 +4,4 @@ metadata:
   name: mysqlconfig
 data:
   username: admin
+  path: "/usr/local/nginx/html"
