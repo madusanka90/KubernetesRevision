@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 4
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingupdate:
+      maxUnavailable: 2
+      maxSurge: 1
+  revisionHistoryLimit: 4
+  selector:
+    matchExpressions:
+     - {key: version, operator: In, values: [v1, v2, v3]}
+  template:
+    metadata:
+      name: postgres
+      labels:
+        version: v1
+        app: nginx
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - name: http
+              protocol: TCP
+              containerPort: 3306
+          env:
+           - name: POSTGRES_USER
+             valueFrom:
+               configMapKeyRef:
+                 name: postgrescm
+                 key: user
+           - name: POSTGRES_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: postgressec
+                 key: password
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "300m"
+              memory: "1024Mi"
+          livenessProbe:
+            exec:
+              command:
+                - cat
+                - "/test.txt"
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          volumeMounts:
+           - name: postgres-vol
+             mountPath: "/var/lib/postgres"
+      volumes:
+        - name: postgres-vol
+          persistentVolumeClaim:
+            claimName: postgrespvc

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgressvclb
+spec:
+  selector:
+    app: nginx
+    version: v1
+  type: LoadBalancer
+  ports:
+   - port: 5432
+     targetPort: 5432
+  clusterIP: 172.29.10.2
+  loadBalancer: 189.248.145.123

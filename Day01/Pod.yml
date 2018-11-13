@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+    tier: frontend
+spec:
+  containers:
+    - name: nginx
+      image: nginx:latest
+      ports:
+        - name: http
+          protocol: TCP
+          containerPort: 80
+      volumeMounts:
+        - name: nginx-vol
+          mountPath: /etc/nginx/html
+      resources:
+        requests:
+          cpu: "200m"
+          memory: "512Mi"
+        limits:
+          cpu: "300m"
+          memory: "1024Mi"
+  volumes:
+    - name: nginx-vol
+      emptyDir: {}
